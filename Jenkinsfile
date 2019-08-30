@@ -1,3 +1,4 @@
+#!groovy​
 pipeline {
   agent {
     docker {
@@ -6,18 +7,18 @@ pipeline {
     }
   }
   stages { 
-    stage('Build') { 
+    stage('Build') {
       steps {
-        sh 'mvn -B -DskipTests clean package' 
+        sh 'mvn --batch-mode -V -U -e clean package -DskipTests' 
       }
     }       
     stage('Test') {
       steps {
-        sh 'mvn test'
+        sh 'mvn --batch-mode -V -U -e test -Dsurefire.useFile=false'
       }
       post {
         always {
-          junit 'target/surefire-reports/*.xml'
+          junit allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml, **/target/failsafe-reports/*.xml'
         }
       }
     }
