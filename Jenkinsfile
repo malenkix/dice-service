@@ -14,7 +14,7 @@ pipeline {
     }       
     stage('Test') {
       steps {
-        sh 'mvn --batch-mode -V -U -e test -Dsurefire.useFile=false'
+        sh 'mvn --batch-mode -V -U -e verify -Dsurefire.useFile=false'
       }
       post {
         always {
